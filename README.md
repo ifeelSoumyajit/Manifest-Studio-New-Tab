@@ -1,0 +1,1 @@
+# Manifest-Studio-New-Tab
