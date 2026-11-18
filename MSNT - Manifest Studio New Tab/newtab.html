@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manifest Studio - New Tab</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="wall"></div>
+<div class="top-utilities" aria-label="Dashboard utilities">
+  <button id="browser-bookmarks-toggle" class="utility-button" type="button" title="Open Chrome bookmarks" aria-label="Open Chrome bookmarks" aria-haspopup="dialog" aria-expanded="false" aria-controls="browser-bookmarks-panel">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4.5h12v15l-6-3.8-6 3.8z"/><path d="M8.5 8h7M8.5 11h7M8.5 14h4"/></svg>
+  </button>
+  <button id="apps-toggle" class="utility-button" type="button" title="Google apps" aria-label="Google apps">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="1.6"/><circle cx="12" cy="6" r="1.6"/><circle cx="18" cy="6" r="1.6"/><circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/><circle cx="6" cy="18" r="1.6"/><circle cx="12" cy="18" r="1.6"/><circle cx="18" cy="18" r="1.6"/></svg>
+  </button>
+</div>
+<main>
+  <header>
+    <h1 id="greeting"></h1>
+    <p id="date"></p>
+  </header>
+
+  <aside class="productivity-stack" aria-label="Personal productivity">
+    <article class="card mini-panel notes-card" id="notes-panel">
+      <div class="card-head">
+        <span>Notes</span>
+        <div class="mini-panel-actions">
+          <button id="clear-note" class="ghost" title="Clear note">Clear</button>
+          <button id="notes-collapse" class="collapse-button" type="button" aria-expanded="true" aria-controls="notes-content" title="Collapse notes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+        </div>
+      </div>
+      <div id="notes-content" class="mini-panel-content">
+        <textarea id="note" placeholder="Jot something down…" spellcheck="false"></textarea>
+        <small id="saved"></small>
+      </div>
+    </article>
+    <article class="card mini-panel todo-card" id="todo-panel">
+      <div class="card-head">
+        <span>To-do list</span>
+        <div class="mini-panel-actions">
+          <button id="clear-completed" class="ghost" title="Remove completed tasks">Clear done</button>
+          <button id="todo-collapse" class="collapse-button" type="button" aria-expanded="true" aria-controls="todo-content" title="Collapse to-do list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+        </div>
+      </div>
+      <div id="todo-content" class="mini-panel-content">
+        <form id="todo-form" class="todo-form">
+          <input id="todo-input" type="text" maxlength="120" placeholder="Add a task…" autocomplete="off">
+          <button class="solid" type="submit" aria-label="Add task">+</button>
+        </form>
+        <ul id="todo-list" class="todo-list"></ul>
+        <small id="todo-count" class="setting-hint">0 tasks</small>
+      </div>
+    </article>
+  </aside>
+
+  <div class="search-shell">
+  <form id="search" autocomplete="off">
+    <select id="engine" aria-label="Search engine">
+      <option value="google">Google</option>
+      <option value="duckduckgo">DuckDuckGo</option>
+      <option value="bing">Bing</option>
+      <option value="brave">Brave</option>
+      <option value="youtube">YouTube</option>
+      <option value="images">Images</option>
+      <option value="reddit">Reddit</option>
+      <option value="wikipedia">Wikipedia</option>
+      <option value="quora">Quora</option>
+    </select>
+    <div id="engine-picker" class="engine-picker">
+      <button id="engine-trigger" class="engine-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+        <span id="engine-current">Google</span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="m2 4 4 4 4-4"/></svg>
+      </button>
+      <div id="engine-menu" class="engine-menu" role="listbox" aria-label="Choose search engine" hidden></div>
+    </div>
+    <input id="q" type="search" placeholder="Search the web" autofocus>
+    <button id="voice-search" type="button" class="icon-button" aria-label="Voice search" title="Voice search">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" aria-hidden="true"><path d="M320 64C267 64 224 107 224 160L224 288C224 341 267 384 320 384C373 384 416 341 416 288L416 160C416 107 373 64 320 64zM176 248C176 234.7 165.3 224 152 224C138.7 224 128 234.7 128 248L128 288C128 385.9 201.3 466.7 296 478.5L296 528L248 528C234.7 528 224 538.7 224 552C224 565.3 234.7 576 248 576L392 576C405.3 576 416 565.3 416 552C416 538.7 405.3 528 392 528L344 528L344 478.5C438.7 466.7 512 385.9 512 288L512 248C512 234.7 501.3 224 488 224C474.7 224 464 234.7 464 248L464 288C464 367.5 399.5 432 320 432C240.5 432 176 367.5 176 288L176 248z"/></svg>
+    </button>
+    <button type="submit" aria-label="Search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l5 5"/></svg>
+    </button>
+  </form>
+  <div id="search-suggestions" class="search-suggestions" role="listbox" aria-label="Search suggestions" hidden></div>
+  </div>
+
+  <div class="bookmark-toolbar">
+    <nav id="bookmarks" aria-label="Quick links"></nav>
+    <div class="bookmark-tools">
+      <button id="bookmark-edit-toggle" class="bookmark-plus bookmark-edit-toggle" type="button" aria-label="Edit homepage bookmarks" title="Edit bookmarks">✎</button>
+    </div>
+    <section id="homepage-bookmark-editor" class="homepage-bookmark-editor" hidden aria-label="Edit homepage bookmarks">
+      <div class="homepage-bookmark-editor-head"><strong>Edit quick links</strong><button id="homepage-bookmark-editor-close" class="ghost" type="button" aria-label="Close editor">×</button></div>
+      <div class="homepage-bookmark-add-row">
+        <input id="home-bookmark-name" type="text" maxlength="64" placeholder="App name" aria-label="App name">
+        <input id="home-bookmark-url" type="url" placeholder="https://…" aria-label="App URL">
+        <button id="home-bookmark-add" class="solid" type="button">Add</button>
+      </div>
+      <ul id="home-bookmark-edit-list" class="home-bookmark-edit-list"></ul>
+    </section>
+  </div>
+
+  <section class="grid">
+    <article class="card clock-card">
+      <svg id="clock" viewBox="0 0 200 200" aria-label="Analog clock">
+        <g id="ticks"></g>
+        <line id="hh" x1="100" y1="100" x2="100" y2="58"/>
+        <line id="mh" x1="100" y1="100" x2="100" y2="34"/>
+        <line id="sh" x1="100" y1="112" x2="100" y2="24"/>
+        <circle cx="100" cy="100" r="5" class="pin"/>
+      </svg>
+      <p id="digital"></p>
+    </article>
+
+    <article class="card weather-card">
+      <div class="wx-top">
+        <div class="wx-icon-orb"><span id="wx-icon">·</span></div>
+        <div class="wx-primary">
+          <div class="wx-temp-row"><b id="wx-temp">--</b></div>
+          <small id="wx-cond">Loading…</small>
+        </div>
+      </div>
+      <div class="wx-place-row">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        <p id="wx-city"></p>
+      </div>
+      <ul id="wx-meta"></ul>
+    </article>
+  </section>
+
+  <p id="custom-text" class="custom-text"></p>
+  <div class="quote-line"><span>“</span><p id="quote-text">Consistency builds momentum.</p><button id="next-quote" class="ghost" title="Next quote">↻</button></div>
+</main>
+
+<div id="apps-panel" class="apps-panel" hidden aria-label="Google apps"></div>
+
+<div id="ai-dock" class="ai-dock">
+  <button id="ai-toggle" class="dock-toggle" aria-expanded="false" aria-controls="ai-popover" title="AI tools">
+    <span class="dock-orbit">✦</span><span>AI tools</span><span class="chevron" aria-hidden="true">›</span>
+  </button>
+  <nav id="ai-popover" class="ai-popover" aria-label="AI tools" hidden></nav>
+</div>
+<aside id="browser-bookmarks-panel" class="browser-bookmarks-panel" role="dialog" aria-label="Chrome profile bookmarks" hidden aria-hidden="true">
+  <div class="panel-head"><div><h2>Bookmarks</h2><p class="bookmark-panel-subtitle">From your Chrome profile</p></div><button id="browser-bookmarks-close" class="ghost" aria-label="Close bookmarks">✕</button></div>
+  <div class="browser-bookmark-actions">
+    <input id="browser-bookmark-search" type="search" placeholder="Search your bookmarks…" aria-label="Search browser bookmarks">
+    <select id="browser-bookmark-sort" aria-label="Sort bookmarks"><option value="alpha">A–Z</option><option value="recent">Recently added</option></select>
+    <button id="browser-bookmark-add" class="soft-button" type="button" title="Add bookmark">+</button>
+  </div>
+  <div id="browser-bookmark-status" class="setting-hint">Select this bookmark icon to grant Manifest Studio permission to read your Chrome bookmarks. Chrome will ask once; access remains enabled until you revoke it.</div>
+  <div id="browser-bookmark-list" class="browser-bookmark-list"></div>
+</aside>
+
+<button id="gear" aria-label="Open settings">
+  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+</button>
+
+<aside id="panel" aria-hidden="true">
+  <div class="panel-head settings-panel-head">
+    <div class="settings-heading">
+      <span class="settings-kicker">MANIFEST STUDIO <span aria-hidden="true">/</span> CONTROL CENTER</span>
+      <h2>Settings</h2>
+      <p class="settings-subtitle">Shape your workspace, your way.</p>
+    </div>
+    <button id="close" class="ghost settings-close" aria-label="Close settings">✕</button>
+  </div>
+
+  <div class="settings-basics-card">
+    <span class="settings-mini-label">PROFILE</span>
+    <label>Your name<input id="s-name" placeholder="e.g. Alex"></label>
+  </div>
+  <div class="group location-group">
+    <span class="lbl">Location & weather</span>
+    <label class="chk"><input id="s-gps" type="checkbox"> Use device GPS location</label>
+    <p class="setting-hint">Your browser will ask permission. Coordinates are used for local weather; city fallback remains available.</p>
+    <label>Fallback city<input id="s-city" placeholder="e.g. Guwahati"></label>
+    <button id="locate" class="soft-button" type="button">⌖ Detect my location now</button>
+    <small id="location-status" class="setting-hint" aria-live="polite"></small>
+  </div>
+
+  <div class="settings-preferences-card">
+    <span class="settings-mini-label">REGIONAL PREFERENCES</span>
+    <div class="row">
+      <label>Temperature units
+        <select id="s-units"><option value="c">°C</option><option value="f">°F</option></select>
+      </label>
+      <label>Time format
+        <select id="s-h12"><option value="0">24-hour</option><option value="1">12-hour</option></select>
+      </label>
+    </div>
+  </div>
+
+  <div class="group theme-group">
+    <span class="lbl">Theme studio</span>
+    <label>Appearance mode<select id="theme-mode"><option value="dark">Dark</option><option value="light">Light</option><option value="system">Follow system</option></select></label>
+    <div id="theme-presets" class="theme-presets"></div>
+    <p class="setting-hint">Every color previews instantly across the dashboard and is saved automatically.</p>
+    <div class="color-grid">
+      <label>Page background<input id="theme-bg" type="color"></label>
+      <label>Raised cards<input id="theme-surface" type="color"></label>
+      <label>Inset panels<input id="theme-surface2" type="color"></label>
+      <label>Accent color<input id="theme-accent" type="color"></label>
+      <label>Main text<input id="theme-text" type="color"></label>
+      <label>Muted text<input id="theme-muted" type="color"></label>
+      <label>Border color<input id="theme-line" type="color"></label>
+      <label>Hover surface<input id="theme-hover" type="color"></label>
+      <label>Input surface<input id="theme-input" type="color"></label>
+      <label>Clock hands<input id="theme-clock" type="color"></label>
+      <label>Highlight tint<input id="theme-highlight" type="color"></label>
+      <label>Danger / remove<input id="theme-danger" type="color"></label>
+      <label>Light shadow<input id="theme-shadowLight" type="color"></label>
+      <label>Dark shadow<input id="theme-shadowDark" type="color"></label>
+    </div>
+    <div class="group appearance-controls">
+      <span class="lbl">Fine appearance controls</span>
+      <label>Interface font<select id="ui-font"><option value="system">System</option><option value="inter">Inter</option><option value="rounded">Rounded</option><option value="mono">Monospace</option></select></label>
+      <label>Corner radius <input id="ui-radius" type="range" min="6" max="32" value="18"></label>
+      <label>Card spacing <input id="ui-gap" type="range" min="8" max="30" value="16"></label>
+      <label>UI scale <input id="ui-scale" type="range" min="85" max="115" value="100"></label>
+      <label>Border intensity <input id="ui-border" type="range" min="0" max="100" value="45"></label>
+      <label>Shadow intensity <input id="ui-shadow" type="range" min="0" max="100" value="0"></label>
+    </div>
+    <button id="theme-reset" class="soft-button" type="button">Reset theme colors</button>
+  </div>
+  <div class="group bookmark-permission-group">
+    <span class="lbl">Chrome bookmark access</span>
+    <p class="setting-hint">Allow Manifest Studio to read bookmarks saved in this Chrome profile. You can grant access here at any time.</p>
+    <button id="bookmark-permission-start" class="soft-button" type="button">Enable bookmark access</button>
+    <div id="bookmark-permission-confirm" class="bookmark-permission-confirm" hidden>
+      <p>Manifest Studio will be able to read your Chrome bookmarks and display them in the bookmark panel. Your bookmarks stay in this browser profile.</p>
+      <div class="row">
+        <button id="bookmark-permission-cancel" class="ghost" type="button">Cancel</button>
+        <button id="bookmark-permission-allow" class="solid" type="button">Continue to Chrome permission</button>
+      </div>
+    </div>
+    <small id="bookmark-permission-status" class="setting-hint" aria-live="polite"></small>
+  </div>
+
+  <div class="group">
+    <span class="lbl">Homepage quick links</span>
+    <ul id="bookmark-edit" class="edit-list"></ul>
+    <div class="row add"><input id="bookmark-n" placeholder="Name"><input id="bookmark-u" placeholder="https://…"><button id="bookmark-add" class="solid">Add</button></div>
+  </div>
+
+  <div class="group">
+    <span class="lbl">Clock</span>
+    <label>Clock style<select id="s-clock-mode"><option value="analog">Analog</option><option value="digital">Digital</option><option value="both">Analog + digital</option></select></label>
+    <label class="chk"><input id="s-show-greeting" type="checkbox"> Show greeting</label>
+    <label class="chk"><input id="s-show-date" type="checkbox"> Show date</label>
+    <label class="chk"><input id="s-secs" type="checkbox"> Seconds hand</label>
+    <label class="chk"><input id="s-ticks" type="checkbox"> Hour dots</label>
+    <label class="chk"><input id="s-digi" type="checkbox"> Digital time under clock</label>
+    <label class="chk"><input id="s-digital-secs" type="checkbox"> Show seconds on digital clock</label>
+  </div>
+
+  <div class="group">
+    <span class="lbl">Wallpaper</span>
+    <label class="wallpaper-upload" for="s-wall">
+      <span class="wallpaper-upload-button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M4 15.5v3A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5v-3"/></svg>Choose wallpaper</span>
+      <span id="wallpaper-file-name" class="wallpaper-file-name">No file selected</span>
+    </label>
+    <input id="s-wall" class="wallpaper-file-input" type="file" accept="image/*">
+    <label>Dim <input id="s-dim" type="range" min="0" max="90"></label>
+    <div class="row"><button id="wall-random" class="soft-button" type="button">Random wallpaper</button><button id="wall-clear" class="ghost" type="button">Remove</button></div>
+    <div class="openverse-wallpaper-browser" id="openverse-wallpaper-browser">
+      <div class="openverse-heading">
+        <span class="setting-subtitle">Search wallpapers</span>
+        <span class="openverse-powered">Powered by Openverse</span>
+      </div>
+      <form id="wall-search-form" class="wall-search-form">
+        <input id="wall-search-query" type="search" maxlength="160" placeholder="Search nature, mountains, architecture…" autocomplete="off" aria-label="Search Openverse wallpapers">
+        <button id="wall-search-submit" class="soft-button" type="submit">Search</button>
+      </form>
+      <p id="wall-search-status" class="wall-search-status" role="status" aria-live="polite">Find openly licensed images and apply one directly as your wallpaper.</p>
+      <div id="wall-search-results" class="wall-search-results" aria-live="polite"></div>
+      <button id="wall-search-more" class="soft-button wall-search-more" type="button" hidden>Load more</button>
+      <p class="wall-search-note">Check each image’s licence and creator details before reuse. Selecting an image sets it as your wallpaper immediately.</p>
+    </div>
+    <label>Widget transparency<input id="s-opacity" type="range" min="35" max="100" value="100"></label>
+    <div class="transparent-card-settings">
+      <span class="setting-subtitle">Transparent card backgrounds</span>
+      <p class="setting-hint">Remove the background fill from the selected card or entire menu while keeping its content and outlines.</p>
+      <div class="transparent-card-grid">
+        <label class="chk"><input id="transparent-clock" type="checkbox"> Time card</label>
+        <label class="chk"><input id="transparent-weather" type="checkbox"> Weather card</label>
+        <label class="chk"><input id="transparent-notes" type="checkbox"> Notes card</label>
+        <label class="chk"><input id="transparent-tasks" type="checkbox"> To-do / task card</label>
+        <label class="chk"><input id="transparent-bookmarks" type="checkbox"> Quick bookmarks</label>
+        <label class="chk"><input id="transparent-browser-bookmarks" type="checkbox"> Chrome bookmarks panel</label>
+        <label class="chk"><input id="transparent-search" type="checkbox"> Search bar</label>
+        <label class="chk"><input id="transparent-quote" type="checkbox"> Daily quote</label>
+        <label class="chk"><input id="transparent-ai" type="checkbox"> AI tools menu</label>
+        <label class="chk"><input id="transparent-apps" type="checkbox"> Google apps menu</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="group">
+    <span class="lbl">AI tool links</span>
+    <ul id="ai-edit" class="edit-list"></ul>
+    <div class="row add">
+      <input id="ai-n" placeholder="Name">
+      <input id="ai-u" placeholder="https://…">
+      <button id="ai-add" class="solid">Add</button>
+    </div>
+  </div>
+
+  <div class="group">
+    <span class="lbl">Dashboard modules</span>
+    <label class="chk"><input id="show-clock" type="checkbox"> Clock</label>
+    <label class="chk"><input id="show-weather" type="checkbox"> Weather</label>
+    <label class="chk"><input id="show-notes" type="checkbox"> Notes</label>
+    <label class="chk"><input id="show-tasks" type="checkbox"> To-do list</label>
+    <label class="chk"><input id="show-bookmarks" type="checkbox"> Quick links</label>
+    <label class="chk"><input id="show-quotes" type="checkbox"> Quote</label>
+    <label class="chk"><input id="show-ai" type="checkbox"> AI launcher</label>
+    <label class="chk"><input id="show-apps" type="checkbox"> Google apps button</label>
+  </div>
+
+  <div class="group">
+    <span class="lbl">Personal message</span>
+    <label>Text below your widgets<input id="s-custom-text" maxlength="100" placeholder="A little reminder for today…"></label>
+    <label class="chk"><input id="s-custom-text-visible" type="checkbox"> Show personal message</label>
+  </div>
+
+  <div class="group">
+    <span class="lbl">Backup & restore</span>
+    <p class="setting-hint">Export your Manifest Studio settings, bookmarks, AI links, notes and tasks to a JSON file.</p>
+    <div class="row"><button id="backup-export" class="soft-button" type="button">Export backup</button><button id="backup-import-trigger" class="soft-button" type="button">Import backup</button></div>
+    <input id="backup-import" type="file" accept="application/json,.json" hidden>
+  </div>
+
+  <button id="reset" class="ghost danger">Reset everything</button>
+
+  <footer class="settings-credit">
+    <span class="settings-credit-label">Designed &amp; developed by</span>
+    <a class="settings-credit-link" href="https://github.com/ifeelSoumyajit" target="_blank" rel="noopener noreferrer" aria-label="Soumyajit Mandal on GitHub">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 .9a11.1 11.1 0 0 0-3.51 21.63c.55.1.76-.24.76-.54v-2.08c-3.1.67-3.75-1.32-3.75-1.32-.5-1.28-1.24-1.62-1.24-1.62-1.01-.69.08-.68.08-.68 1.12.08 1.71 1.15 1.71 1.15 1 .1.76 2.03 3.37 1.5.1-.72.39-1.21.7-1.49-2.48-.28-5.09-1.24-5.09-5.52 0-1.22.44-2.21 1.15-2.99-.12-.28-.5-1.42.11-2.95 0 0 .94-.3 3.05 1.14a10.6 10.6 0 0 1 5.55 0c2.12-1.44 3.05-1.14 3.05-1.14.61 1.53.23 2.67.12 2.95.72.78 1.14 1.77 1.14 2.99 0 4.29-2.61 5.23-5.1 5.51.4.35.75 1.02.75 2.06v3.05c0 .3.2.65.77.54A11.1 11.1 0 0 0 12 .9Z"/>
+      </svg>
+      <span>Soumyajit Mandal</span>
+      <span class="settings-credit-arrow" aria-hidden="true">↗</span>
+    </a>
+  </footer>
+</aside>
+<script src="app.js"></script>
+</body>
+</html>
